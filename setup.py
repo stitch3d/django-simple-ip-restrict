@@ -12,7 +12,7 @@ def readall(path):
 
 setup(
     name="django_simple_ip_restrict",
-    version="1.0.23",
+    version="1.0.24",
     description="Apply an IP restriction to specific routes",
     long_description=readall("README.md"),
     long_description_content_type="text/markdown",
