@@ -3,7 +3,7 @@ from functools import partial
 
 from django.conf import settings
 from django.http import HttpResponseForbidden
-from django.urls import get_resolver
+from django.urls import get_resolver, exceptions
 from django.urls.resolvers import URLResolver, URLPattern, RoutePattern, RegexPattern
 from netaddr import IPAddress, IPNetwork
 
