@@ -28,15 +28,20 @@ def ip_filter(get_response):
             resolver = get_resolver(urlconf)
         else:
             resolver = get_resolver()
-        resolver_match = resolver.resolve(request.path_info)
-
-        if not protected_namespaces.isdisjoint(resolver_match.namespaces):
-            ip_address = IPAddress(request.META["HTTP_X_FORWARDED_FOR"])
-            if not any(ip_address in subnet for subnet in whitelist):
-                logger.warn(
-                    "IP %s tried to access protected url %s", ip_address, request.path
-                )
-                return HttpResponseForbidden()
+        try:
+            resolver_match = resolver.resolve(request.path_info)
+        except exceptions.Resolver404:
+            pass
+        else:
+            if not protected_namespaces.isdisjoint(resolver_match.namespaces):
+                ip_address = IPAddress(request.META["HTTP_X_FORWARDED_FOR"])
+                if not any(ip_address in subnet for subnet in whitelist):
+                    logger.warn(
+                        "IP %s tried to access protected url %s",
+                        ip_address,
+                        request.path,
+                    )
+                    return HttpResponseForbidden()
 
         response = get_response(request)
         return response
