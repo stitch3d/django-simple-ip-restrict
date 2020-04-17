@@ -34,7 +34,7 @@ def ip_filter(get_response):
             pass
         else:
             if not protected_namespaces.isdisjoint(resolver_match.namespaces):
-                ip_address = IPAddress(request.META["HTTP_X_FORWARDED_FOR"])
+                ip_address = IPAddress(request.META["HTTP_X_FORWARDED_FOR"].split(",")[0])
                 if not any(ip_address in subnet for subnet in whitelist):
                     logger.warn(
                         "IP %s tried to access protected url %s",
